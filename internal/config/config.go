@@ -1,11 +1,12 @@
 package config
 
 const (
-	LuaEngine = iota
-	CELEngine = iota
+	LuaEngine        = iota
+	LuaComplexEngine = iota
+	CELEngine        = iota
 )
 
-type CheckerConfig struct {
+type ValidatorConfig struct {
 	Type        int    `yaml:"type" json:"type"`
 	Rule        string `yaml:"rule" json:"rule"`
 	Title       string `yaml:"title" json:"title"`
@@ -13,5 +14,5 @@ type CheckerConfig struct {
 }
 
 type Config struct {
-	Checkers []*CheckerConfig `yaml:"checkers" json:"checkers"`
+	Validators []*ValidatorConfig `json:"validators" yaml:"validators"`
 }
