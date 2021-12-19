@@ -20,7 +20,7 @@ func (r *Runner) Run(data map[string]interface{}) bool {
 			color.Red("[Fail]\n")
 			color.Yellow("It's Okay to Fail, My Son\n")
 			if err != nil {
-				color.Red("Validator error: %s\n")
+				color.Red("Validator error: %s\n", err)
 			}
 			return false
 		}
