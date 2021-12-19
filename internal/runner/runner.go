@@ -18,6 +18,7 @@ func (r *Runner) Run(data map[string]interface{}) bool {
 		fmt.Printf("Running validator: %s ", v.Title())
 		if !v.Exec(data) {
 			color.Red("[Fail]\n")
+			color.Blue("It's Okay to Fail, My Son\n")
 			return false
 		}
 		color.Green("[Success]\n")
