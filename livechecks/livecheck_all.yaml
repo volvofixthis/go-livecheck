@@ -1,0 +1,13 @@
+validators:
+  - title: Check consumer (Lua)
+    description: Check if pool is active and worker iterated in last 10 minutes
+    type: 0
+    rule: |-
+      data.gauge.client_connected == 1
+      and (helper:UnixTime() - data.timer.last_ping < helper:Duration("10m"))
+  - title: Check consumer (CEL)
+    description: Check if pool is active and worker iterated in last 10 minutes
+    type: 2
+    rule: |-
+      int(data.gauge.client_connected) == 1
+      && (int(now) - int(data.timer.last_ping) < duration("10m").getSeconds())

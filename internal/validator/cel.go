@@ -7,6 +7,7 @@ import (
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
 	"github.com/google/cel-go/cel"
 	"github.com/google/cel-go/checker/decls"
+	"github.com/google/cel-go/common/types"
 )
 
 type CELValidator struct {
@@ -15,8 +16,9 @@ type CELValidator struct {
 }
 
 func (v *CELValidator) Exec(data map[string]interface{}) bool {
+	// Now, get the input in the correct format (conversion: Go struct -> JSON -> structpb).
 	out, _, err := v.program.Eval(map[string]interface{}{
-		"data": data,
+		"data": types.NewStringInterfaceMap(types.DefaultTypeAdapter, data),
 		"now":  time.Now().UTC(),
 	})
 	if err != nil {
@@ -35,7 +37,7 @@ func (v *CELValidator) Title() string {
 func NewCELValidator(c *config.ValidatorConfig) (*CELValidator, error) {
 	env, err := cel.NewEnv(
 		cel.Declarations(
-			decls.NewVar("data", decls.Any),
+			decls.NewVar("data", decls.NewMapType(decls.String, decls.Dyn)),
 			decls.NewVar("now", decls.Timestamp),
 		),
 	)
