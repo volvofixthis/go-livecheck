@@ -19,7 +19,7 @@ func TestLuaValidatorFabric(t *testing.T) {
 		"last_livecheck":   float64(time.Now().UTC().UnixNano())/float64(time.Second) - 5*60,
 	}
 	luaValidator, _ := NewLuaValidator(&c)
-	if !luaValidator.Exec(data) {
+	if valid, err := luaValidator.Exec(data); !valid || err != nil {
 		t.Error("Not valid")
 	}
 }
@@ -36,7 +36,7 @@ func TestCELValidatorFabric(t *testing.T) {
 		"last_livecheck":   float64(time.Now().UTC().UnixNano())/float64(time.Second) - 5*60,
 	}
 	celValidator, _ := NewCELValidator(&c)
-	if !celValidator.Exec(data) {
+	if valid, err := celValidator.Exec(data); !valid || err != nil {
 		t.Error("Not valid")
 	}
 }

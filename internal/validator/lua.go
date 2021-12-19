@@ -2,7 +2,6 @@ package validator
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
@@ -10,6 +9,8 @@ import (
 	luar "layeh.com/gopher-luar"
 )
 
+// MapToTable convert map[strign]interface{} into lua table
+// Adopted from here https://github.com/yuin/gopher-lua/issues/160
 func MapToTable(m map[string]interface{}) *lua.LTable {
 	// Main table pointer
 	resultTable := &lua.LTable{}
@@ -104,17 +105,17 @@ func (h *Helper) UnixTime() float64 {
 func (h *Helper) Duration(value string) float64 {
 	duration, err := time.ParseDuration(value)
 	if err != nil {
-		log.Fatalf("wrong duration %s", err)
+		panic(fmt.Sprintf("wrong duration %s", err))
 	}
 	return float64(duration) / float64(time.Second)
 }
 
-func (v *LuaValidator) Exec(data map[string]interface{}) bool {
+func (v *LuaValidator) Exec(data map[string]interface{}) (bool, error) {
 	v.luaState.SetGlobal("data", MapToTable(data))
 	if err := v.luaState.DoString(v.preparedRule); err != nil {
-		log.Fatalf("problem with execution %s", err)
+		return false, err
 	}
-	return v.result.Get()
+	return v.result.Get(), nil
 }
 
 func (v *LuaValidator) Title() string {
@@ -135,6 +136,10 @@ func NewLuaValidator(vc *config.ValidatorConfig) (*LuaValidator, error) {
 
 	if v.config.Type == config.LuaEngine {
 		v.preparedRule = fmt.Sprintf("result:Set(%s)", v.preparedRule)
+	}
+
+	if _, err := l.LoadString(v.preparedRule); err != nil {
+		return nil, err
 	}
 
 	return v, nil

@@ -2,7 +2,6 @@ package runner
 
 import (
 	"fmt"
-	"log"
 
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/validator"
@@ -15,10 +14,14 @@ type Runner struct {
 
 func (r *Runner) Run(data map[string]interface{}) bool {
 	for _, v := range r.Validators {
-		fmt.Printf("Running validator: %s ", v.Title())
-		if !v.Exec(data) {
+		fmt.Printf("Running validator [%s] ", v.Title())
+		if valid, err := v.Exec(data); !valid {
+
 			color.Red("[Fail]\n")
-			color.Blue("It's Okay to Fail, My Son\n")
+			color.Yellow("It's Okay to Fail, My Son\n")
+			if err != nil {
+				color.Red("Validator error: %s\n")
+			}
 			return false
 		}
 		color.Green("[Success]\n")
@@ -26,15 +29,16 @@ func (r *Runner) Run(data map[string]interface{}) bool {
 	return true
 }
 
-func NewRunner(c *config.Config) *Runner {
+func NewRunner(c *config.Config) (*Runner, error) {
 	runner := &Runner{}
 	for _, vc := range c.Validators {
 		v, err := validator.NewValidator(vc)
 		if err != nil {
-			log.Fatalf("Problem with creating validator: %s, err: %s", vc.Title, err)
+			color.Red("Error creating validator [%s]: %s", vc.Title, err)
+			return nil, err
 		}
 		runner.Validators = append(runner.Validators, v)
 	}
 
-	return runner
+	return runner, nil
 }

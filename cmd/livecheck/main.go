@@ -8,6 +8,7 @@ import (
 
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/runner"
+	"github.com/fatih/color"
 	"github.com/spf13/viper"
 )
 
@@ -22,11 +23,16 @@ func main() {
 	}
 	config := config.Config{}
 	viper.Unmarshal(&config)
-	runner := runner.NewRunner(&config)
+	runner, err := runner.NewRunner(&config)
+	if err != nil {
+		color.Red("Error when creating runner")
+		os.Exit(1)
+	}
 	data := map[string]interface{}{}
 	err = json.NewDecoder(os.Stdin).Decode(&data)
 	if err != nil {
-		log.Fatalf("Error parsing metrics %s\n", err)
+		color.Red("Error parsing metrics: %s\n", err)
+		os.Exit(1)
 	}
 	if !runner.Run(data) {
 		os.Exit(1)

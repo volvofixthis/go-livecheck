@@ -7,7 +7,7 @@ import (
 )
 
 type Validator interface {
-	Exec(data map[string]interface{}) bool
+	Exec(data map[string]interface{}) (bool, error)
 	Title() string
 }
 
