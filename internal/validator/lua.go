@@ -88,9 +88,10 @@ func (r *Result) Set(value bool) {
 }
 
 type LuaValidator struct {
-	config   *config.ValidatorConfig
-	luaState *lua.LState
-	result   *Result
+	config       *config.ValidatorConfig
+	luaState     *lua.LState
+	result       *Result
+	preparedRule string
 }
 
 type Helper struct {
@@ -110,11 +111,7 @@ func (h *Helper) Duration(value string) float64 {
 
 func (v *LuaValidator) Exec(data map[string]interface{}) bool {
 	v.luaState.SetGlobal("data", MapToTable(data))
-	rule := v.config.Rule
-	if v.config.Type == config.LuaEngine {
-		rule = fmt.Sprintf("result:Set(%s)", rule)
-	}
-	if err := v.luaState.DoString(rule); err != nil {
+	if err := v.luaState.DoString(v.preparedRule); err != nil {
 		log.Fatalf("problem with execution %s", err)
 	}
 	return v.result.Get()
@@ -134,5 +131,11 @@ func NewLuaValidator(vc *config.ValidatorConfig) (*LuaValidator, error) {
 	h := &Helper{}
 	l.SetGlobal("helper", luar.New(l, h))
 
-	return &LuaValidator{config: vc, luaState: l, result: r}, nil
+	v := &LuaValidator{config: vc, luaState: l, result: r, preparedRule: vc.Rule}
+
+	if v.config.Type == config.LuaEngine {
+		v.preparedRule = fmt.Sprintf("result:Set(%s)", v.preparedRule)
+	}
+
+	return v, nil
 }

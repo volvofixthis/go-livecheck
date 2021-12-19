@@ -15,7 +15,7 @@ func NewValidator(c *config.ValidatorConfig) (Validator, error) {
 	switch c.Type {
 	case config.LuaEngine:
 		return NewLuaValidator(c)
-	case config.LuaComplexEngine:
+	case config.LuaCustomEngine:
 		return NewLuaValidator(c)
 	case config.CELEngine:
 		return NewCELValidator(c)
