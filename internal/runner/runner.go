@@ -13,20 +13,23 @@ type Runner struct {
 }
 
 func (r *Runner) Run(data map[string]interface{}) bool {
+	result := true
 	for _, v := range r.Validators {
 		fmt.Printf("Running validator [%s] ", v.Title())
 		if valid, err := v.Exec(data); !valid {
-
 			color.Red("[Fail]\n")
-			color.Yellow("It's Okay to Fail, My Son\n")
 			if err != nil {
 				color.Red("Validator error: %s\n", err)
 			}
-			return false
+			result = false
+			continue
 		}
 		color.Green("[Success]\n")
 	}
-	return true
+	if !result {
+		color.Yellow("It's Okay to Fail, My Son\n")
+	}
+	return result
 }
 
 func NewRunner(c *config.Config) (*Runner, error) {
