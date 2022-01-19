@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"log"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -11,25 +10,12 @@ import (
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/runner"
 	"github.com/fatih/color"
-	"github.com/spf13/viper"
 )
 
 func main() {
-	configPath := flag.String("c", "./livechecks/livecheck.yaml", "Config file")
-	metricsPath := flag.String("m", "", "Metrics path")
-	forceStdin := flag.Bool("s", false, "Force stdin input")
 	flag.Parse()
-	viper.SetConfigFile(*configPath)
-	viper.SetConfigType("yaml")
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Fatalf("Fatal error config file: %s\n", err)
-	}
-	config := config.Config{}
-	if err := viper.Unmarshal(&config); err != nil {
-		color.Red("Problem with unmarshalling config: %s", err)
-	}
-	runner, err := runner.NewRunner(&config)
+	config := config.GetConfig(*configPath)
+	runner, err := runner.NewRunner(config)
 	if err != nil {
 		color.Red("Error when creating runner")
 		os.Exit(1)
@@ -53,12 +39,12 @@ func main() {
 					os.Exit(1)
 				}
 				if config.InputMetrics.Regexp != "" {
-					files, err = filterFIlesWithRegexp(files, config.InputMetrics.Regexp)
+					files, err = filterFilesWithRegexp(files, config.InputMetrics.Regexp)
 					if err != nil {
 						os.Exit(1)
 					}
 					if len(files) == 0 {
-						color.Red("No metrics files matched with regexp: %s", config.InputMetrics.Regexp)
+						color.Red("No metrics files matching regexp: %s", config.InputMetrics.Regexp)
 						os.Exit(1)
 					}
 				}
@@ -76,7 +62,7 @@ func main() {
 				color.Red("Error when searching files with metrics: %T, %s", err, err)
 			}
 		default:
-			color.Red("No such input metrics type: %s", config.InputMetrics.Type)
+			color.Red("Can't find such input metrics type: %s", config.InputMetrics.Type)
 			os.Exit(1)
 
 		}
@@ -91,13 +77,13 @@ func main() {
 	}
 }
 
-func filterFIlesWithRegexp(files []string, r string) ([]string, error) {
+func filterFilesWithRegexp(files []string, r string) ([]string, error) {
 	filesF := make([]string, 0, len(files))
 	for _, file := range files {
 		base := filepath.Base(file)
 		found, err := regexp.MatchString(r, base)
 		if err != nil {
-			color.Red("Error in regexp: %s", r)
+			color.Red("Regexp is wrong: %s", r)
 			return nil, err
 		}
 		if found {
