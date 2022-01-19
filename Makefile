@@ -11,3 +11,7 @@ integration-test: build
 	./livechecks/metrics.json.sh | ./output/livecheck -c ./livechecks/livecheck_all.yaml
 	! ./livechecks/metrics.json.sh | ./output/livecheck -c ./livechecks/livecheck_lua.yaml
 	! ./livechecks/metrics.json.sh | ./output/livecheck -c ./livechecks/livecheck_cel.yaml
+	./livechecks/metrics.pid.json.sh && ./output/livecheck -c ./livechecks/livecheck_workers_cel.yaml
+	./livechecks/metrics.pid.problem.json.sh && ! ./output/livecheck -c ./livechecks/livecheck_workers_cel.yaml
+	./livechecks/metrics.pid.problem.json.sh && ./livechecks/metrics.json.sh | ./output/livecheck -s -c ./livechecks/livecheck_workers_cel.yaml
+

@@ -1,0 +1,11 @@
+version: v2
+input_metrics:
+  type: file
+  src: ./output/metrics.*.json
+  regexp: ^metrics\.([2-9]|[\d]{2,})\.json$
+validators:
+  - title: Check consumer (CEL)
+    description: Check if pool is active and worker iterated in last 10 minutes
+    type: cel
+    rule: int(data.gauge.client_connected) == 1 && (int(now) - int(data.timer.last_ping) < duration("10m").getSeconds())
+
