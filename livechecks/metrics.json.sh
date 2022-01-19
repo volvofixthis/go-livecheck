@@ -6,3 +6,4 @@ cat <<-EOF
     "timer": {"last_ping": ${timestamp}}
 }
 EOF
+
