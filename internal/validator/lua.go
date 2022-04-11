@@ -118,8 +118,16 @@ func (v *LuaValidator) Exec(data map[string]interface{}) (bool, error) {
 	return v.result.Get(), nil
 }
 
+func (v *LuaValidator) Name() string {
+	return v.config.Name
+}
+
 func (v *LuaValidator) Title() string {
 	return v.config.Title
+}
+
+func (v *LuaValidator) IsMajor() bool {
+	return v.config.Major
 }
 
 func NewLuaValidator(vc *config.ValidatorConfig) (*LuaValidator, error) {

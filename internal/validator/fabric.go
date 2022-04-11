@@ -9,6 +9,8 @@ import (
 type Validator interface {
 	Exec(data map[string]interface{}) (bool, error)
 	Title() string
+	Name() string
+	IsMajor() bool
 }
 
 func NewValidator(c *config.ValidatorConfig) (Validator, error) {
@@ -19,6 +21,8 @@ func NewValidator(c *config.ValidatorConfig) (Validator, error) {
 		return NewLuaValidator(c)
 	case config.CELEngine:
 		return NewCELValidator(c)
+	case config.ScriptEngine:
+		return NewScriptValidator(c)
 	}
 	return nil, errors.New("unsupported rule type")
 }

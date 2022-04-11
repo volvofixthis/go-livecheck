@@ -11,6 +11,7 @@ const (
 	LuaEngine       = "lua"
 	LuaCustomEngine = "lua_custom"
 	CELEngine       = "cel"
+	ScriptEngine    = "script"
 )
 
 type ValidatorConfig struct {
@@ -18,18 +19,28 @@ type ValidatorConfig struct {
 	Rule        string `mapstructure:"rule"`
 	Title       string `mapstructure:"title"`
 	Description string `mapstructure:"description"`
+	Name        string `mapstructure:"name"`
+	Major       bool   `mapstructure:"major"` // v3 and up
 }
 
 type InputMetricsConfig struct {
-	Type   string `mapstructure:"type"`
-	Src    string `mapstructure:"src"`
-	Regexp string `mapstructure:"regexp"`
+	Type   string                 `mapstructure:"type"`
+	Src    string                 `mapstructure:"src"`
+	Regexp string                 `mapstructure:"regexp"` // deprecated
+	Extra  map[string]interface{} `mapstructure:"extra"`
+}
+
+type OutputMetricsConfig struct {
+	Type  string                 `mapstructure:"type"`
+	Dst   string                 `mapstructure:"dst"`
+	Extra map[string]interface{} `mapstructure:"extra"`
 }
 
 type Config struct {
-	Version      string              `mapstructure:"version"`
-	Validators   []*ValidatorConfig  `mapstructure:"validators"`
-	InputMetrics *InputMetricsConfig `mapstructure:"input_metrics"`
+	Version       string               `mapstructure:"version"`
+	Validators    []*ValidatorConfig   `mapstructure:"validators"`
+	InputMetrics  *InputMetricsConfig  `mapstructure:"input_metrics"`
+	OutputMetrics *OutputMetricsConfig `mapstructure:"output_metrics"`
 }
 
 func GetConfig(path string) *Config {

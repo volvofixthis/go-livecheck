@@ -7,4 +7,3 @@ validators:
     description: Check if pool is active and worker iterated in last 10 minutes
     type: lua
     rule: data.gauge.client_connected == 1 and (helper:UnixTime() - data.timer.last_ping < helper:Duration("10m"))
-

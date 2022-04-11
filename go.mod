@@ -1,11 +1,14 @@
 module bitbucket.rbc.ru/go/go-livecheck
 
-go 1.17
+go 1.18
 
 require (
 	github.com/fatih/color v1.13.0
 	github.com/google/cel-go v0.9.0
+	github.com/mitchellh/mapstructure v1.4.3
+	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475
 	github.com/spf13/viper v1.10.1
+	github.com/volvofixthis/go-metrics-influxdb v0.0.1-udp
 	github.com/yuin/gopher-lua v0.0.0-20210529063254-f4c35e4016d9
 	layeh.com/gopher-luar v1.0.10
 )
@@ -13,13 +16,12 @@ require (
 require (
 	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20210826220005-b48c857c3a0e // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/influxdata/influxdb v1.8.4 // indirect
 	github.com/kr/pretty v0.2.0 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/spf13/cast v1.4.1 // indirect

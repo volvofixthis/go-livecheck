@@ -8,4 +8,4 @@ validators:
     description: Check if pool is active and worker iterated in last 10 minutes
     type: cel
     rule: int(data.gauge.client_connected) == 1 && (int(now) - int(data.timer.last_ping) < duration("10m").getSeconds())
-
+    major: true

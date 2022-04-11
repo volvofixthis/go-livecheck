@@ -28,8 +28,16 @@ func (v *CELValidator) Exec(data map[string]interface{}) (bool, error) {
 	return false, nil
 }
 
+func (v *CELValidator) Name() string {
+	return v.config.Name
+}
+
 func (v *CELValidator) Title() string {
 	return v.config.Title
+}
+
+func (v *CELValidator) IsMajor() bool {
+	return v.config.Major
 }
 
 func NewCELValidator(c *config.ValidatorConfig) (*CELValidator, error) {

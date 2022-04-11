@@ -9,4 +9,3 @@ validators:
     rule: |-
       data.gauge.client_connected == 1
       and (helper:UnixTime() - data.timer.last_ping < helper:Duration("4m"))
-  
