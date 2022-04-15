@@ -6,14 +6,7 @@ import (
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
 )
 
-type Validator interface {
-	Exec(data map[string]interface{}) (bool, error)
-	Title() string
-	Name() string
-	IsMajor() bool
-}
-
-func NewValidator(c *config.ValidatorConfig) (Validator, error) {
+func NewValidator(c *config.ValidatorConfig) (ValidatorInterface, error) {
 	switch c.Type {
 	case config.LuaEngine:
 		return NewLuaValidator(c)
@@ -23,6 +16,8 @@ func NewValidator(c *config.ValidatorConfig) (Validator, error) {
 		return NewCELValidator(c)
 	case config.ScriptEngine:
 		return NewScriptValidator(c)
+	case config.L4Engine:
+		return NewL4Validator(c)
 	}
 	return nil, errors.New("unsupported rule type")
 }

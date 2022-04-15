@@ -12,7 +12,7 @@ import (
 
 type Runner struct {
 	config        *config.Config
-	Validators    []validator.Validator
+	Validators    []validator.ValidatorInterface
 	OutputMetrics outputmetrics.OutputMetrics
 }
 

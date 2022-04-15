@@ -1,0 +1,18 @@
+version: v3
+validators:
+  - title: Yandex tcp
+    description: check if yandex is accessible
+    type: l4
+    rule: "ya.ru:80,google.com:443"
+    extra:
+      proto: tcp
+      timeout: 1s
+    major: true
+output_metrics:
+  type: influxdb
+  dst: "udp://127.0.0.1:8086"
+  extra:
+    measurement: "livecheck.results"
+    tags:
+      main: ok
+      dc: kur

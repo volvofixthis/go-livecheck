@@ -12,15 +12,17 @@ const (
 	LuaCustomEngine = "lua_custom"
 	CELEngine       = "cel"
 	ScriptEngine    = "script"
+	L4Engine	       	= "l4"
 )
 
 type ValidatorConfig struct {
-	Type        string `mapstructure:"type"`
-	Rule        string `mapstructure:"rule"`
-	Title       string `mapstructure:"title"`
-	Description string `mapstructure:"description"`
-	Name        string `mapstructure:"name"`
-	Major       bool   `mapstructure:"major"` // v3 and up
+	Type        string                 `mapstructure:"type"`
+	Rule        string                 `mapstructure:"rule"`
+	Title       string                 `mapstructure:"title"`
+	Description string                 `mapstructure:"description"`
+	Name        string                 `mapstructure:"name"`
+	Major       bool                   `mapstructure:"major"` // v3 and up
+	Extra       map[string]interface{} `mapstructure:"extra"`
 }
 
 type InputMetricsConfig struct {

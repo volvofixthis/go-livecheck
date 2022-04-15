@@ -10,7 +10,7 @@ import (
 )
 
 type CELValidator struct {
-	config  *config.ValidatorConfig
+	*Validator
 	program cel.Program
 }
 
@@ -26,18 +26,6 @@ func (v *CELValidator) Exec(data map[string]interface{}) (bool, error) {
 		return r, nil
 	}
 	return false, nil
-}
-
-func (v *CELValidator) Name() string {
-	return v.config.Name
-}
-
-func (v *CELValidator) Title() string {
-	return v.config.Title
-}
-
-func (v *CELValidator) IsMajor() bool {
-	return v.config.Major
 }
 
 func NewCELValidator(c *config.ValidatorConfig) (*CELValidator, error) {
@@ -58,5 +46,5 @@ func NewCELValidator(c *config.ValidatorConfig) (*CELValidator, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &CELValidator{config: c, program: prg}, nil
+	return &CELValidator{Validator: NewValidatorBase(c), program: prg}, nil
 }
