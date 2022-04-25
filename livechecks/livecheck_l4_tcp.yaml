@@ -8,6 +8,14 @@ validators:
       proto: tcp
       timeout: 1s
     major: true
+  - title: Yandex udp
+    description: check if yandex is accessible
+    type: l4
+    rule: "127.0.0.1:5000"
+    extra:
+      proto: udp
+      timeout: 1s
+    major: false
 output_metrics:
   type: influxdb
   dst: "udp://127.0.0.1:8086"

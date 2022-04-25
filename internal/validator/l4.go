@@ -50,6 +50,9 @@ func (v *UDPValidator) Exec(data map[string]any) (bool, error) {
 			return false, err
 		}
 	}
+	if len(addresses) == 0 {
+		return false, errors.New("no addresses")
+	}
 	return true, nil
 }
 

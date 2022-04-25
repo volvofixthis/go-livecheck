@@ -1,6 +1,7 @@
 version: v3
 validators:
   - title: Yandex (Script)
+    name: "yandex"
     description: check if yandex is accessible
     type: script
     rule: "/bin/env curl https://ya.ru"
