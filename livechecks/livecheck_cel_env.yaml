@@ -1,0 +1,8 @@
+version: v4
+input_metrics:
+  src: file://./livechecks/metrics_env.json
+validators:
+  - title: Check consumer (CEL)
+    description: Check if pool is active and worker iterated in last 10 minutes
+    type: cel
+    rule: int(data.gauge.client_connected) == {{ env "CLIENT_CONNECTED" }}

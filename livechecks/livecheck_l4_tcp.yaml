@@ -11,7 +11,7 @@ validators:
   - title: Yandex udp
     description: check if yandex is accessible
     type: l4
-    rule: "127.0.0.1:5000"
+    rule: "127.0.0.1:53"
     extra:
       proto: udp
       timeout: 1s
