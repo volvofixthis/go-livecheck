@@ -5,15 +5,18 @@ import (
 	"os"
 	"path/filepath"
 
+	"bitbucket.rbc.ru/go/go-livecheck/internal/clients"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/inputmetrics"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/runner"
+
 	"github.com/fatih/color"
 	"net/url"
 )
 
 func main() {
 	flag.Parse()
+	clients.InitHTTPClient(*insecureSkipVerify)
 	config, err := config.GetConfig(*configPath, *executeTemplate)
 	if err != nil {
 		color.Red("Error when reading config: %s", err)

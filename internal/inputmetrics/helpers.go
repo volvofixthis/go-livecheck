@@ -3,11 +3,11 @@ package inputmetrics
 import (
 	"encoding/json"
 	"io"
-	"net/http"
 	"os"
 	"path/filepath"
 	"regexp"
 
+	"bitbucket.rbc.ru/go/go-livecheck/internal/clients"
 	"github.com/fatih/color"
 	"gopkg.in/yaml.v3"
 )
@@ -52,7 +52,8 @@ func GetMetricsFileData(path string, d Decoder) (map[string]interface{}, error) 
 }
 
 func GetMetricsURLData(url string, d Decoder) (map[string]interface{}, error) {
-	resp, err := http.Get(url)
+	httpClient := clients.GetHTTPClient()
+	resp, err := httpClient.Get(url)
 	if err != nil {
 		return nil, err
 	}

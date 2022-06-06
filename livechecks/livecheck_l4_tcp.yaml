@@ -6,7 +6,7 @@ validators:
     rule: "ya.ru:80,google.com:443"
     extra:
       proto: tcp
-      timeout: 1s
+      timeout: 10s
     major: true
   - title: Yandex udp
     description: check if yandex is accessible

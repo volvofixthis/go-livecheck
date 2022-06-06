@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"errors"
 	"io"
-	"net/http"
 	"net/url"
 	"os"
 
 	"text/template"
 
+	"bitbucket.rbc.ru/go/go-livecheck/internal/clients"
 	"github.com/Masterminds/sprig/v3"
 	"github.com/mcuadros/go-defaults"
 	"github.com/spf13/viper"
@@ -78,7 +78,8 @@ func GetConfigReader(path string) (io.Reader, error) {
 		}
 		return r, nil
 	case "http", "https":
-		resp, err := http.Get(path)
+		httpClient := clients.GetHTTPClient()
+		resp, err := httpClient.Get(path)
 		if err != nil {
 			return nil, err
 		}

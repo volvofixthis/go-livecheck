@@ -6,3 +6,4 @@ var configPath *string = flag.String("c", "./livechecks/livecheck.yaml", "Config
 var metricsPath *string = flag.String("m", "", "Metrics path")
 var forceStdin *bool = flag.Bool("s", false, "Force stdin input")
 var executeTemplate *bool = flag.Bool("e", false, "Execute config as template")
+var insecureSkipVerify *bool = flag.Bool("k", false, "Enable insecure skip verify")
