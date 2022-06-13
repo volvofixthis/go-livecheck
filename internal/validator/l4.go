@@ -89,7 +89,7 @@ func NewL4Validator(c *config.ValidatorConfig) (ValidatorInterface, error) {
 	l4Config := L4Config{
 		proto: extra.Proto,
 		send:  extra.Send,
-		data:  "Bite my shiny metal! (c) Bender",
+		data:  "Bite my shiny metal ass! (c) Bender",
 	}
 	if extra.Data != "" {
 		l4Config.data = extra.Data
