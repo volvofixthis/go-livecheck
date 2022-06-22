@@ -108,9 +108,14 @@ func main() {
 		}
 		return
 	}
-	data, err := inputmetrics.GetMetricsStdinData(d)
-	if err != nil {
-		os.Exit(1)
+	data := map[string]interface{}{}
+	if *forceStdin {
+		color.Yellow("Parsing metrics from stdin")
+		data, err = inputmetrics.GetMetricsStdinData(d)
+		if err != nil {
+			color.Red("Error reading stdin: %s", err)
+			os.Exit(1)
+		}
 	}
 	if !runner.Run(data) {
 		os.Exit(1)
