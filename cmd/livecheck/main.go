@@ -17,7 +17,7 @@ import (
 func main() {
 	flag.Parse()
 	clients.InitHTTPClient(*insecureSkipVerify)
-	config, err := config.GetConfig(*configPath, *executeTemplate)
+	config, err := config.GetConfig(*configPath, *executeTemplate, *debug)
 	if err != nil {
 		color.Red("Error when reading config: %s", err)
 		os.Exit(1)

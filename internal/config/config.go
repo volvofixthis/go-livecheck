@@ -3,6 +3,7 @@ package config
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"io"
 	"net/url"
 	"os"
@@ -88,7 +89,7 @@ func GetConfigReader(path string) (io.Reader, error) {
 	return nil, errors.New("wrong config location")
 }
 
-func GetConfig(path string, executeTemplate bool) (*Config, error) {
+func GetConfig(path string, executeTemplate bool, debug bool) (*Config, error) {
 	r, err := GetConfigReader(path)
 
 	if err != nil {
@@ -111,6 +112,9 @@ func GetConfig(path string, executeTemplate bool) (*Config, error) {
 			return nil, err
 		}
 		buf = bufT.Bytes()
+		if debug {
+			fmt.Println(string(buf))
+		}
 	}
 
 	r = bytes.NewReader(buf)
