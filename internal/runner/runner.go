@@ -2,6 +2,7 @@ package runner
 
 import (
 	"fmt"
+	"time"
 
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/outputmetrics"
@@ -25,24 +26,37 @@ func MajorFeatureEnabled(c *config.Config) bool {
 
 func (r *Runner) Run(data map[string]interface{}) bool {
 	result := true
+	vC := make(chan bool, len(r.Validators))
 	for _, v := range r.Validators {
-		fmt.Printf("Running validator [%s] ", v.Title())
-		valid, err := v.Exec(data)
+		go func(v validator.ValidatorInterface) {
+			start := time.Now()
 
-		if r.OutputMetrics != nil && v.Name() != "" {
-			r.OutputMetrics.SetResult(v.Name(), valid)
-		}
-		if !valid {
-			color.Red("[Fail]\n")
-			if err != nil {
-				color.Red("Validator error: %s\n", err)
+			valid, err := v.Exec(data)
+			elapsed := time.Since(start)
+
+			if r.OutputMetrics != nil && v.Name() != "" {
+				r.OutputMetrics.SetResult(v.Name(), valid)
+				r.OutputMetrics.SetTime(v.Name(), int64(elapsed))
 			}
-			if !MajorFeatureEnabled(r.config) || v.IsMajor() {
-				result = false
+			fmt.Printf("Validator [%s] result ", v.Title())
+			if !valid {
+				color.Red("[Fail]\n")
+				if err != nil {
+					color.Red("Validator error: %s\n", err)
+				}
+				if !MajorFeatureEnabled(r.config) || v.IsMajor() {
+					vC <- false
+				} else {
+					vC <- true
+				}
+			} else {
+				vC <- true
+				color.Green("[Success]\n")
 			}
-			continue
-		}
-		color.Green("[Success]\n")
+		}(v)
+	}
+	for i := 0; i < len(r.Validators); i++ {
+		result = <-vC
 	}
 	if !result {
 		color.Yellow("It's Okay to Fail, My Son\n")

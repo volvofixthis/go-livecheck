@@ -1,6 +1,7 @@
 version: v3
 validators:
   - title: Yandex tcp
+    name: yandex_tcp
     description: check if yandex is accessible
     type: l4
     rule: "ya.ru:80,google.com:443"
@@ -9,6 +10,7 @@ validators:
       timeout: 10s
     major: true
   - title: Yandex udp
+    name: yandex_udp
     description: check if yandex is accessible
     type: l4
     rule: "127.0.0.1:53"
@@ -18,9 +20,9 @@ validators:
     major: false
 output_metrics:
   type: influxdb
-  dst: "udp://127.0.0.1:8086"
+  dst: "udp://0.0.0.0:8092"
   extra:
-    measurement: "livecheck.results"
+    measurement: "auth-v3.livecheck"
     tags:
       main: ok
       dc: kur

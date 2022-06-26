@@ -1,23 +1,27 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"time"
 
 	"bitbucket.rbc.ru/go/go-livecheck/internal/clients"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/inputmetrics"
 	"bitbucket.rbc.ru/go/go-livecheck/internal/runner"
 
-	"github.com/fatih/color"
 	"net/url"
+
+	"github.com/fatih/color"
 )
 
 func main() {
 	flag.Parse()
 	clients.InitHTTPClient(*insecureSkipVerify)
-	config, err := config.GetConfig(*configPath, *executeTemplate, *debug)
+	config, err := config.GetConfig(*configPath, *executeTemplate, *verbose)
 	if err != nil {
 		color.Red("Error when reading config: %s", err)
 		os.Exit(1)
@@ -117,7 +121,24 @@ func main() {
 			os.Exit(1)
 		}
 	}
-	if !runner.Run(data) {
+	var result bool
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+	if *daemon {
+	checkLoop:
+		for {
+			result = runner.Run(data)
+			time.Sleep(time.Second)
+			select {
+			case <-ctx.Done():
+				break checkLoop
+			case <-time.After(*interval):
+			}
+		}
+	} else {
+		result = runner.Run(data)
+	}
+	if !result {
 		os.Exit(1)
 	}
 }

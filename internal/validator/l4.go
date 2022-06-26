@@ -30,7 +30,7 @@ type UDPValidator struct {
 }
 
 func (v *UDPValidator) Exec(data map[string]any) (bool, error) {
-	addresses := strings.Split(v.Validator.config.Rule, ",")
+	addresses := strings.Split(v.config.Rule, ",")
 	for _, address := range addresses {
 		s, err := net.ResolveUDPAddr(v.l4Config.proto, address)
 		if err != nil {
@@ -62,7 +62,7 @@ type TCPValidator struct {
 }
 
 func (v *TCPValidator) Exec(data map[string]any) (bool, error) {
-	addresses := strings.Split(v.Validator.config.Rule, ",")
+	addresses := strings.Split(v.config.Rule, ",")
 	for _, address := range addresses {
 		c, err := net.DialTimeout(v.l4Config.proto, address, v.l4Config.timeout)
 		if err != nil {
@@ -116,5 +116,5 @@ func NewL4Validator(c *config.ValidatorConfig) (ValidatorInterface, error) {
 		}, nil
 	}
 
-	return nil, errors.New("No such L4 validator")
+	return nil, errors.New("no such L4 validator")
 }

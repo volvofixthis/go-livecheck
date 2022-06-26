@@ -30,6 +30,12 @@ func (o *InfluxDBOutputMetrics) SetResult(name string, value bool) {
 	g.Update(valueInt)
 }
 
+func (o *InfluxDBOutputMetrics) SetTime(name string, value int64) {
+	g := metrics.NewGauge()
+	metrics.Register(name+".time", g)
+	g.Update(value)
+}
+
 func (o *InfluxDBOutputMetrics) Flush() {
 	go influxdb.InfluxDBWithTags(metrics.DefaultRegistry,
 		25*time.Millisecond,
