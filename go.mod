@@ -1,4 +1,4 @@
-module bitbucket.rbc.ru/go/go-livecheck
+module github.com/volvofixthis/go-livecheck
 
 go 1.18
 

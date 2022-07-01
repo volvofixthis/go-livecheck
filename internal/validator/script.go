@@ -6,7 +6,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
+	"github.com/volvofixthis/go-livecheck/internal/config"
 )
 
 type ScriptValidator struct {

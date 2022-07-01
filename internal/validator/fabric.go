@@ -3,7 +3,7 @@ package validator
 import (
 	"errors"
 
-	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
+	"github.com/volvofixthis/go-livecheck/internal/config"
 )
 
 func NewValidator(c *config.ValidatorConfig) (ValidatorInterface, error) {

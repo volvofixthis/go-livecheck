@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
-	"bitbucket.rbc.ru/go/go-livecheck/internal/outputmetrics"
-	"bitbucket.rbc.ru/go/go-livecheck/internal/validator"
+	"github.com/volvofixthis/go-livecheck/internal/config"
+	"github.com/volvofixthis/go-livecheck/internal/outputmetrics"
+	"github.com/volvofixthis/go-livecheck/internal/validator"
 
 	"github.com/fatih/color"
 )

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
+	"github.com/volvofixthis/go-livecheck/internal/config"
 	lua "github.com/yuin/gopher-lua"
 	luar "layeh.com/gopher-luar"
 )

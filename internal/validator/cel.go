@@ -3,7 +3,7 @@ package validator
 import (
 	"time"
 
-	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
+	"github.com/volvofixthis/go-livecheck/internal/config"
 	"github.com/google/cel-go/cel"
 	"github.com/google/cel-go/checker/decls"
 	"github.com/google/cel-go/common/types"

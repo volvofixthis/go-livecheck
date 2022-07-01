@@ -8,10 +8,10 @@ import (
 	"path/filepath"
 	"time"
 
-	"bitbucket.rbc.ru/go/go-livecheck/internal/clients"
-	"bitbucket.rbc.ru/go/go-livecheck/internal/config"
-	"bitbucket.rbc.ru/go/go-livecheck/internal/inputmetrics"
-	"bitbucket.rbc.ru/go/go-livecheck/internal/runner"
+	"github.com/volvofixthis/go-livecheck/internal/clients"
+	"github.com/volvofixthis/go-livecheck/internal/config"
+	"github.com/volvofixthis/go-livecheck/internal/inputmetrics"
+	"github.com/volvofixthis/go-livecheck/internal/runner"
 
 	"net/url"
 

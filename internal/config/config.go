@@ -10,7 +10,7 @@ import (
 
 	"text/template"
 
-	"bitbucket.rbc.ru/go/go-livecheck/internal/clients"
+	"github.com/volvofixthis/go-livecheck/internal/clients"
 	"github.com/Masterminds/sprig/v3"
 	"github.com/mcuadros/go-defaults"
 	"github.com/spf13/viper"

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"regexp"
 
-	"bitbucket.rbc.ru/go/go-livecheck/internal/clients"
+	"github.com/volvofixthis/go-livecheck/internal/clients"
 	"github.com/fatih/color"
 	"gopkg.in/yaml.v3"
 )
