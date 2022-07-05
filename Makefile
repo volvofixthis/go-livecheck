@@ -20,3 +20,11 @@ integration-test: build
 	./livechecks/metrics.json.sh | ./output/livecheck -s -c ./livechecks/livecheck_l4_tcp.yaml
 	export CLIENT_CONNECTED=1 && ./output/livecheck -c ./livechecks/livecheck_cel_env.yaml -e
 	./output/livecheck -c ./livechecks/livecheck_cel_v4_file.yaml
+
+all:
+	make OS=linux GOARCH=arm64
+	make OS=linux GOARCH=amd64
+	make OS=darwin GOARCH=arm64
+	make OS=darwin GOARCH=amd64
+	make OS=windows GOARCH=amd64
+
