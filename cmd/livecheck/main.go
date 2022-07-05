@@ -19,6 +19,8 @@ import (
 )
 
 func main() {
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
 	flag.Parse()
 	clients.InitHTTPClient(*insecureSkipVerify)
 	config, err := config.GetConfig(*configPath, *executeTemplate, *verbose)
@@ -43,7 +45,7 @@ func main() {
 		if err != nil {
 			os.Exit(1)
 		}
-		if !runner.Run(data) {
+		if !runner.Run(ctx, data) {
 			os.Exit(1)
 		}
 		return
@@ -90,7 +92,7 @@ func main() {
 					if err != nil {
 						os.Exit(1)
 					}
-					if !runner.Run(data) {
+					if !runner.Run(ctx, data) {
 						os.Exit(1)
 					}
 				}
@@ -102,7 +104,7 @@ func main() {
 			if err != nil {
 				os.Exit(1)
 			}
-			if !runner.Run(data) {
+			if !runner.Run(ctx, data) {
 				os.Exit(1)
 			}
 		default:
@@ -122,12 +124,10 @@ func main() {
 		}
 	}
 	var result bool
-	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
-	defer stop()
 	if *daemon {
 	checkLoop:
 		for {
-			result = runner.Run(data)
+			result = runner.Run(ctx, data)
 			time.Sleep(time.Second)
 			select {
 			case <-ctx.Done():
@@ -136,7 +136,7 @@ func main() {
 			}
 		}
 	} else {
-		result = runner.Run(data)
+		result = runner.Run(ctx, data)
 	}
 	if !result {
 		os.Exit(1)

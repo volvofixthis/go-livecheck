@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -24,7 +25,7 @@ func MajorFeatureEnabled(c *config.Config) bool {
 	return true
 }
 
-func (r *Runner) Run(data map[string]interface{}) bool {
+func (r *Runner) Run(ctx context.Context, data map[string]interface{}) bool {
 	result := true
 	vC := make(chan bool, len(r.Validators))
 	for _, v := range r.Validators {
@@ -55,8 +56,17 @@ func (r *Runner) Run(data map[string]interface{}) bool {
 			}
 		}(v)
 	}
+resultCollect:
 	for i := 0; i < len(r.Validators); i++ {
-		result = <-vC
+		select {
+		case v := <-vC:
+			if !v {
+				result = false
+			}
+		case <-ctx.Done():
+			result = false
+			break resultCollect
+		}
 	}
 	if !result {
 		color.Yellow("It's Okay to Fail, My Son\n")
