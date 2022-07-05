@@ -27,7 +27,6 @@ integration-test: build
 
 all:
 	make OS=linux ARCH=arm64
-	make OS=linux ARCH=arm64
 	make OS=linux ARCH=amd64
 	make OS=darwin ARCH=arm64
 	make OS=darwin ARCH=amd64
