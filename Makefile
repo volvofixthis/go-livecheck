@@ -4,10 +4,13 @@ OS=linux
 ARCH=amd64
 
 build:
-	GOOS=${OS} GOARCH=${ARCH} go build -o output/go-livecheck_${OS}_${ARCH} ./cmd/livecheck
+	mkdir -p output && GOOS=${OS} GOARCH=${ARCH} go build -o output/livecheck_${OS}_${ARCH} ./cmd/livecheck
 
 test:
 	@go test ./internal/validator ./internal/runner
+
+clean:
+	@rm -rf vendor && rm -rf output 
 
 integration-test: build
 	./livechecks/metrics.json.sh | ./output/livecheck -s -c ./livechecks/livecheck_all.yaml
@@ -22,9 +25,9 @@ integration-test: build
 	./output/livecheck -c ./livechecks/livecheck_cel_v4_file.yaml
 
 all:
-	make OS=linux GOARCH=arm64
-	make OS=linux GOARCH=amd64
-	make OS=darwin GOARCH=arm64
-	make OS=darwin GOARCH=amd64
-	make OS=windows GOARCH=amd64
+	make OS=linux ARCH=arm64
+	make OS=linux ARCH=amd64
+	make OS=darwin ARCH=arm64
+	make OS=darwin ARCH=amd64
+	make OS=windows ARCH=amd64
 
