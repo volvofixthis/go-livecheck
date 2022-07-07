@@ -1,3 +1,6 @@
+# Usecase
+go-livecheck is command line tool for validation metrics and envs. If validation fails it returns exit code = 1.  
+Exception for daemon mode, where go-livecheck runs forever sends metrics if they are enabled
 # Install
 Run go install:  
 go install github.com/volvofixthis/go-livecheck/cmd/livecheck@latest 
