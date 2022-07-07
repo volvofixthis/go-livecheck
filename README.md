@@ -17,15 +17,27 @@ make all
 Metrics data can be passed via stdin. Data format can be yaml or json.
 For test data we need generate json data, we use for this simple bash script.  
 Content of metrics.json.sh:  
-`
-timestamp=$(date +%s)
-timestamp=$(($timestamp-5*60))
-cat <<-EOF
-{
-    "gauge": {"client_connected": 1},
-    "timer": {"last_ping": ${timestamp}}
-}
-EOF
-`
+```bash
+timestamp=$(date +%s)  
+timestamp=$(($timestamp-5*60))  
+cat <<-EOF  
+{   
+    "gauge": {"client_connected": 1},  
+    "timer": {"last_ping": ${timestamp}}  
+}  
+EOF  
+```
+Content of livecheck_lua.yaml:  
+```yaml
+validators:  
+  - title: Check consumer (CEL)  
+    description: Check if pool is active and worker iterated in last 10 minutes  
+    type: cel  
+    rule: int(data.gauge.client_connected) == 1 && (int(now) - int(data.timer.last_ping) < duration("4m").getSeconds())  
+  - title: Check consumer (Lua)  
+    description: Check if pool is active and worker iterated in last 10 minutes  
+    type: lua  
+    rule: data.gauge.client_connected == 1 and (helper:UnixTime() - data.timer.last_ping < helper:Duration("10m"))  
+```
 Command for validation, it will return exit code = 1 because one of validation rules fail:  
 `./livechecks/metrics.json.sh | ./output/${TEST_BINARY} -s -c ./livechecks/livecheck_lua.yaml`
