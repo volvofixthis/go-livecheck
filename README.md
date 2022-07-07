@@ -1,6 +1,7 @@
 # Usecase
 go-livecheck is command line tool for validation metrics and envs. If validation fails it returns exit code = 1.  
-Exception for daemon mode, where go-livecheck runs forever sends metrics if they are enabled
+Exception for daemon mode, where go-livecheck runs forever sends metrics if they are enabled.  
+For metrics validation you can use Lua or CEL. Also you can use script validator and l4 validator.
 # Install
 Run go install:  
 go install github.com/volvofixthis/go-livecheck/cmd/livecheck@latest 
@@ -39,5 +40,5 @@ validators:
     type: lua  
     rule: data.gauge.client_connected == 1 and (helper:UnixTime() - data.timer.last_ping < helper:Duration("10m"))  
 ```
-Command for validation, it will return exit code = 1 because one of validation rules fail:  
+Command for validation, it will return exit code = 1 because one of validation rules will fail:  
 `./livechecks/metrics.json.sh | ./output/${TEST_BINARY} -s -c ./livechecks/livecheck_lua.yaml`
