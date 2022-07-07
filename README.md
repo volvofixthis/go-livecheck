@@ -41,4 +41,4 @@ validators:
     rule: data.gauge.client_connected == 1 and (helper:UnixTime() - data.timer.last_ping < helper:Duration("10m"))  
 ```
 Command for validation, it will return exit code = 1 because one of validation rules will fail:  
-`./livechecks/metrics.json.sh | ./output/${TEST_BINARY} -s -c ./livechecks/livecheck_lua.yaml`
+`./livechecks/metrics.json.sh | livecheck -s -c ./livechecks/livecheck_lua.yaml`
