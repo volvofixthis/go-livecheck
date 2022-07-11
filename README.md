@@ -16,7 +16,7 @@ Or just build all platforms in one shot:
 make all
 # Metrics validation
 Metrics data can be passed via stdin. Data format can be yaml or json.
-For test data we need generate json data, we use for this simple bash script.  
+For testing purpose we need generate sample with metrics in json format. We will use for this simple bash script.  
 Content of metrics.json.sh:  
 ```bash
 timestamp=$(date +%s)  
