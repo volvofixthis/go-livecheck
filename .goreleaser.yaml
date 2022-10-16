@@ -6,6 +6,5 @@ builds:
       - linux
       - darwin
       - windows
-    gobinary: "go1.19.2"
     ignore:
       - goarch: 386
