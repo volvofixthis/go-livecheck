@@ -1,0 +1,11 @@
+builds:
+  - main: ./cmd/livecheck
+    id: "livecheck"
+    binary: livecheck
+    goos:
+      - linux
+      - darwin
+      - windows
+    gobinary: "go1.19.2"
+    ignore:
+      - goarch: 386
