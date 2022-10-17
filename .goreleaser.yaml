@@ -1,7 +1,7 @@
 builds:
   - main: ./cmd/livecheck
-    id: golivecheck
-    binary: golivecheck
+    id: go-livecheck
+    binary: go-livecheck
     goos:
       - linux
       - darwin
@@ -10,8 +10,8 @@ builds:
       - goarch: 386
 
 nfpms:
-  - id: golivecheck
-    package_name: golivecheck
+  - id: go-livecheck
+    package_name: go-livecheck
     vendor: Lakin
     homepage: https://github.com/volvofixthis/go-livecheck
     maintainer: Konstantin Losev <incmail0@gmail.com>
