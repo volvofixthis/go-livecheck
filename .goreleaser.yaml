@@ -1,10 +1,25 @@
 builds:
   - main: ./cmd/livecheck
-    id: "livecheck"
-    binary: livecheck
+    id: golivecheck
+    binary: golivecheck
     goos:
       - linux
       - darwin
       - windows
     ignore:
       - goarch: 386
+
+nfpms:
+  - id: golivecheck
+    package_name: golivecheck
+    vendor: Lakin
+    homepage: https://github.com/volvofixthis/go-livecheck
+    maintainer: Konstantin Losev <incmail0@gmail.com>
+    description: |-
+      Tool for metrics and env validation
+    formats:
+      - apk
+      - deb
+      - rpm
+      - termux.deb
+    license: MIT
